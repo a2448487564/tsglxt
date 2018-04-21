@@ -99,6 +99,34 @@ public class MenuActions {
 			}
 		}
 	}
+	private static class ReaderAddAction extends AbstractAction {
+		ReaderAddAction() {
+			super("读者信息添加", null);
+			putValue(Action.LONG_DESCRIPTION, "添加新的读者信息");
+			putValue(Action.SHORT_DESCRIPTION, "读者信息添加");
+		}
+		public void actionPerformed(ActionEvent e) {
+			if (!frames.containsKey("读者添加")||frames.get("读者添加").isClosed()) {
+				ReaderAddIFrame iframe = new ReaderAddIFrame();
+				frames.put("读者添加", iframe);
+				Library.addIFame(frames.get("读者添加"));
+			}
+		}
+	}
+	private static class ReaderModiAction extends AbstractAction {
+		ReaderModiAction() {
+			super("读者信息修改", null);
+			putValue(Action.LONG_DESCRIPTION, "修改和删除读者信息");
+			putValue(Action.SHORT_DESCRIPTION, "读者信息修改");
+		}
+		public void actionPerformed(ActionEvent e) {
+			if (!frames.containsKey("读者信息修改")||frames.get("读者信息修改").isClosed()) {
+				ReaderModiAndDelIFrame iframe=new ReaderModiAndDelIFrame();
+				frames.put("读者信息修改", iframe);
+				Library.addIFame(frames.get("读者信息修改"));
+			}
+		}
+	}
 	private static class ExitAction extends AbstractAction { // 退出系统动作
 		public ExitAction() {
 			super("退出系统", null);
