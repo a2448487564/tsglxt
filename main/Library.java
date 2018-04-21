@@ -121,6 +121,9 @@ public class Library extends JFrame {
 		bookTypeManageMItem.add(MenuActions.BOOKTYPE_ADD);
 		bookTypeManageMItem.add(MenuActions.BOOKTYPE_MODIFY);
 		
+		readerManagerMItem.add(MenuActions.READER_ADD);
+		readerManagerMItem.add(MenuActions.READER_MODIFY);
+		
 		baseMenu.add(readerManagerMItem);//添加读者信息管理子菜单
 		baseMenu.add(bookTypeManageMItem);//添加图书类别管理子菜单
 		baseMenu.add(menu);				//添加图书信息管理子菜单
