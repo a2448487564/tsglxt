@@ -1,0 +1,323 @@
+package com.wyp.iframe;
+
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
+import com.wyp.JComPz.Item;
+import com.wyp.dao.ReaderDao;
+import com.wyp.model.BookType;
+import com.wyp.util.CreatecdIcon;
+import com.wyp.util.MyDocument;
+
+/**
+ * 名称：图书添加窗体
+ * 
+ */
+public class ReaderAddIFrame extends JInternalFrame {
+    private JTextField ISBN;
+	private JTextField name;
+	private JTextField sex;
+	private JTextField age;
+	private JTextField identityCard;
+	private JFormattedTextField date;
+	private JTextField maxNum;
+	private JTextField tel;
+	private JTextField keepMoney;
+	private JTextField zj;
+	private JTextField zy;
+	private JFormattedTextField bztime;
+	private JButton buttonadd;
+	private JButton buttonclose;
+	
+	Map map=new HashMap();
+	public ReaderAddIFrame() {
+		super();
+		final BorderLayout borderLayout = new BorderLayout();//创建边框布局管理器
+		getContentPane().setLayout(borderLayout);			//设置布局
+		setIconifiable(true);							// 设置窗体可最小化
+		setClosable(true);								// 设置窗体可关闭
+		setTitle("图书类别添加");						// 设置窗体标题
+		setBounds(100, 100, 760, 500);					// 设置窗体位置和大小
+
+		final JPanel mainPanel = new JPanel();			//创建中心面板
+		mainPanel.setBorder(new EmptyBorder(5, 10, 5, 10));//设置边框
+		final GridLayout gridLayout = new GridLayout(6, 2);//创建表格布局管理器
+		gridLayout.setVgap(18);					//设置组件之间垂直距离
+		gridLayout.setHgap(5);					//设置组件之间平行距离
+		mainPanel.setLayout(gridLayout);		//设置布局
+		getContentPane().add(mainPanel);		//将中心面板加入到窗体
+
+		final JLabel ISBNLabel = new JLabel();	//创建图书编号标签
+		ISBNLabel.setText("读者编号：");			//设置标签文本
+		mainPanel.add(ISBNLabel);				//添加到中心面板
+
+		ISBN = new JTextField("请输入13位书号",6);//创建书号文本框
+		ISBN.setDocument(new MyDocument(6)); //设置书号文本框最大输入值为13
+		
+		ISBN.setColumns(6);//设置文本框长度
+		ISBN.addKeyListener(new ISBNkeyListener());//注册监听器
+		ISBN.addFocusListener(new ISBNFocusListener());//注册监听器
+		mainPanel.add(ISBN);
+
+		final JLabel nameLabel = new JLabel();//创建书籍类别标签
+		nameLabel.setHorizontalAlignment(SwingConstants.CENTER);//设置平行对齐方式
+		nameLabel.setText("读者姓名：");//设置标签文本
+		mainPanel.add(nameLabel);//添加到中心面板
+
+		name = new JTextField();//创建书名文本框
+		mainPanel.add(name);	//添加到中心面板
+
+		final JLabel sexLabel = new JLabel();//创建书名标签
+		sexLabel.setText("读者性别：");//设置标签文本
+		mainPanel.add(sexLabel);//添加到中心面板
+
+		sex = new JTextField();//创建书名文本框
+		mainPanel.add(sex);	//添加到中心面板
+
+		final JLabel ageLabel = new JLabel();//创建作者标签
+		ageLabel.setHorizontalAlignment(SwingConstants.CENTER);//设置平行对齐方式
+		ageLabel.setText("读者年龄：");//设置标签文本
+		mainPanel.add(ageLabel);//添加到中心面板
+
+		age = new JTextField();//创建作者文本框
+		age.setDocument(new MyDocument(10));//设置作者文本框最大输入值为10
+		mainPanel.add(age);//添加到中心面板
+
+
+		final JLabel identityCardLabel = new JLabel();//创建书名标签
+		identityCardLabel.setText("证件号码：");//设置标签文本
+		mainPanel.add(identityCardLabel);//添加到中心面板
+
+		identityCard = new JTextField();//创建书名文本框
+		mainPanel.add(identityCard);	//添加到中心面板
+
+		final JLabel dateLabel = new JLabel();//创建作者标签
+		dateLabel.setHorizontalAlignment(SwingConstants.CENTER);//设置平行对齐方式
+		dateLabel.setText("会员证有效日期：");//设置标签文本
+		mainPanel.add(dateLabel);//添加到中心面板
+
+		SimpleDateFormat myfmt=new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+		date= new JFormattedTextField(myfmt.getDateInstance());//创建日期输入框
+		date.setValue(new java.util.Date());		//设置日期为当前系统时间
+		mainPanel.add(date);//添加到中心面板
+
+        final JLabel maxNumLabel = new JLabel();//创建书名标签
+		maxNumLabel.setText("最大借书量：");//设置标签文本
+		mainPanel.add(maxNumLabel);//添加到中心面板
+
+		maxNum = new JTextField();//创建书名文本框
+		mainPanel.add(maxNum);	//添加到中心面板
+
+		final JLabel telLabel = new JLabel();//创建作者标签
+		telLabel.setHorizontalAlignment(SwingConstants.CENTER);//设置平行对齐方式
+		telLabel.setText("电话号码：");//设置标签文本
+		mainPanel.add(telLabel);//添加到中心面板
+
+		tel = new JTextField();//创建作者文本框
+		tel.setDocument(new MyDocument(10));//设置作者文本框最大输入值为10
+		mainPanel.add(tel);//添加到中心面板
+
+
+		final JLabel keepMoneyLabel = new JLabel();//创建书名标签
+		keepMoneyLabel.setText("押金：");//设置标签文本
+		mainPanel.add(keepMoneyLabel);//添加到中心面板
+
+		keepMoney = new JTextField();//创建书名文本框
+		mainPanel.add(keepMoney);	//添加到中心面板
+
+		final JLabel zjLabel = new JLabel();//创建作者标签
+		zjLabel.setHorizontalAlignment(SwingConstants.CENTER);//设置平行对齐方式
+		zjLabel.setText("证件类型：");//设置标签文本
+		mainPanel.add(zjLabel);//添加到中心面板
+
+		zj = new JTextField();//创建作者文本框
+		zj.setDocument(new MyDocument(10));//设置作者文本框最大输入值为10
+		mainPanel.add(zj);//添加到中心面板
+
+
+		final JLabel zyLabel = new JLabel();//创建书名标签
+		zyLabel.setText("职业：");//设置标签文本
+		mainPanel.add(zyLabel);//添加到中心面板
+
+		zy = new JTextField();//创建书名文本框
+		mainPanel.add(zy);	//添加到中心面板
+
+		final JLabel bztimeLabel = new JLabel();//创建作者标签
+		bztimeLabel.setHorizontalAlignment(SwingConstants.CENTER);//设置平行对齐方式
+		bztimeLabel.setText("办证日期：");//设置标签文本
+		mainPanel.add(bztimeLabel);//添加到中心面板
+
+		SimpleDateFormat myfmt1=new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+		bztime= new JFormattedTextField(myfmt1.getDateInstance());//创建日期输入框
+		bztime.setValue(new java.util.Date());		//设置日期为当前系统时间
+		mainPanel.add(bztime);//添加到中心面板
+
+
+		
+		final JPanel bottomPanel = new JPanel();//创建底部面板
+		bottomPanel.setBorder(new LineBorder(SystemColor.
+							activeCaptionBorder, 1, false));//设置边框
+		getContentPane().add(bottomPanel, BorderLayout.SOUTH);//添加到窗体中
+		final FlowLayout flowLayout = new FlowLayout();//流布局管理器
+		flowLayout.setVgap(2);	//设置组件之间垂直距离
+		flowLayout.setHgap(30);//设置组件之间平行距离
+		flowLayout.setAlignment(FlowLayout.RIGHT);//设置对齐方式
+		bottomPanel.setLayout(flowLayout);//设置底部面板布局
+		
+		buttonadd= new JButton();//创建添加按钮
+		buttonadd.addActionListener(new AddBookActionListener());//注册监听器
+		buttonadd.setText("添加");//设置按钮文本
+		bottomPanel.add(buttonadd);//添加到底部面板
+		
+		buttonclose = new JButton();//创建关闭按钮
+		buttonclose.addActionListener(new CloseActionListener());//注册监听器
+		buttonclose.setText("关闭");//设置按钮文本
+		bottomPanel.add(buttonclose);//添加到底部面板
+
+		final JLabel imageLabel = new JLabel();//图片标签
+		ImageIcon bookAddIcon=CreatecdIcon.add("bookAdd.jpg");//图片图标
+		imageLabel.setIcon(bookAddIcon);//设置标签显示图片
+		imageLabel.setPreferredSize(new Dimension(400, 160));//设置标签的大小
+		imageLabel.setBorder(new LineBorder(SystemColor.
+						activeCaptionBorder, 1, false));//设置边框
+		getContentPane().add(imageLabel, BorderLayout.NORTH);//添加到窗体中
+		imageLabel.setText("图书信息添加(LOGO图片)");//设置标签文本
+		
+		setVisible(true);											// 显示窗体可见
+	}
+	class ISBNFocusListener extends FocusAdapter {
+		public void focusLost(FocusEvent e){
+			if(!"".equals(ISBN.getText())) {
+			if(!ReaderDao.selectreaderisbn(ISBN.getText().trim()).isEmpty()){
+				JOptionPane.showMessageDialog(null, "添加类别重复！");
+				return;
+			}
+		}}
+	}
+	class ISBNkeyListener extends KeyAdapter {
+		public void keyPressed(final KeyEvent e) {
+			if (e.getKeyCode() == 6){
+				buttonadd.doClick();
+			}
+		
+		}
+	}
+	class CloseActionListener implements ActionListener {			// 添加关闭按钮的事件监听器
+		public void actionPerformed(final ActionEvent e) {
+			doDefaultCloseAction();
+		}
+	}
+	class AddBookActionListener implements ActionListener {		// 添加按钮的单击事件监听器
+		public void actionPerformed(final ActionEvent e) {
+			if(ISBN.getText().length()==0){//判断是否输入了书籍编号
+				JOptionPane.showMessageDialog(null, "书号文本框不可以为空");
+				return;
+			}
+			if(name.getText().length()==0){//判断是否输入了书籍名称
+				JOptionPane.showMessageDialog(null, "图书名称文本框不可以为空");
+				return;
+			}
+			if(age.getText().length()==0){//判断是否输入了作者
+				JOptionPane.showMessageDialog(null, "作者文本框不可以为空");
+				return;
+			}
+			if(sex.getText().length()==0){//判断是否输入了作者
+				JOptionPane.showMessageDialog(null, "作者文本框不可以为空");
+				return;
+			}
+			if(identityCard.getText().length()==0){//判断是否输入了作者
+				JOptionPane.showMessageDialog(null, "作者文本框不可以为空");
+				return;
+			}
+			if(date.getText().length()==0){//判断是否输入了作者
+				JOptionPane.showMessageDialog(null, "作者文本框不可以为空");
+				return;
+			}
+			if(maxNum.getText().length()==0){//判断是否输入了作者
+				JOptionPane.showMessageDialog(null, "作者文本框不可以为空");
+				return;
+			}
+			if(tel.getText().length()==0){//判断是否输入了作者
+				JOptionPane.showMessageDialog(null, "作者文本框不可以为空");
+				return;
+			}
+			if(keepMoney.getText().length()==0){//判断是否输入了作者
+				JOptionPane.showMessageDialog(null, "作者文本框不可以为空");
+				return;
+			}
+			if(zj.getText().length()==0){//判断是否输入了作者
+				JOptionPane.showMessageDialog(null, "作者文本框不可以为空");
+				return;
+			}
+			if(zy.getText().length()==0){//判断是否输入了作者
+				JOptionPane.showMessageDialog(null, "作者文本框不可以为空");
+				return;
+			}
+			if(bztime.getText().length()==0){//判断是否输入了作者
+				JOptionPane.showMessageDialog(null, "作者文本框不可以为空");
+				return;
+			}
+			
+			
+			String ISBNs=ISBN.getText().trim();
+			String names=name.getText().trim();	
+			String sexs=sex.getText().trim();
+			String ages=age.getText().trim();
+			String identityCards=identityCard.getText().trim();
+			String dates=date.getText().trim();	
+			String maxNums=maxNum.getText().trim();
+			String tels=tel.getText().trim();
+			String keepMoneys=keepMoney.getText().trim();
+			String zjs=zj.getText().trim();	
+			String zys=zy.getText().trim();
+			String bztimes=bztime.getText().trim();
+			
+			
+			
+			int i=ReaderDao.Insertreader(names,sexs, Integer.parseInt(ages), identityCards, java.sql.Date.valueOf(dates),
+					Integer.parseInt(maxNums), tels,Float.parseFloat(keepMoneys),Integer.parseInt(zjs),zys,java.sql.Date.valueOf(bztimes),ISBNs);
+			if(i==1){	//如果返回更新记录数为1，表示添加成功
+				JOptionPane.showMessageDialog(null, "添加成功");
+				doDefaultCloseAction();
+			}
+		}
+	}
+	class NumberListener extends KeyAdapter {
+		public void keyTyped(KeyEvent e) {
+			String numStr="0123456789."+(char)8;
+			if(numStr.indexOf(e.getKeyChar())<0){
+				e.consume();
+			}
+		}
+	}
+
+}
