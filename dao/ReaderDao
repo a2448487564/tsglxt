@@ -1,0 +1,97 @@
+package com.wyp.dao;
+
+import java.sql.Date;
+import java.util.*;
+import com.wyp.model.BookInfo;
+import com.wyp.model.BookType;
+import com.wyp.model.Reader;
+import com.wyp.util.JDBC;
+import java.sql.ResultSet;
+
+public class ReaderDao {
+	public static int Insertreader(String name,String sex,int age,String identityCard,
+			Date date,int maxNum,String tel,float keepMoney,int zj,String zy,Date bztime,String ISBN){
+			int i=0;
+			try{
+				String sql = "insert into reader(name,sex,age,identityCard,"+
+			"date,maxNum,tel,keepMoney,zj,zy,ISBN,bztime) values('"+name+"','"+sex+"',"+age+","+
+			"'"+identityCard+"','"+date+"',"+maxNum+",'"+tel+"',"+keepMoney+","+zj+",'"+zy+"','"+ISBN+"','"+bztime+"')";
+				i = JDBC.executeUpdate(sql);
+			}catch(Exception e){
+				System.out.println(e.getMessage());
+			}
+			JDBC.close();
+			return i;
+		}
+
+		public static int Updatereader(String name,String sex,int age,String identityCard,
+			Date date,int maxNum,String tel,float keepMoney,int zj,String zy,Date bztime,String ISBN){
+			int i=0;
+			try{
+				String sql = "update reader set name='"+name+"',sex='"+sex+"',age="+age+",identityCard='"+identityCard+"',date='"+date+"',maxNum="+maxNum+","+
+			"tel='"+tel+"',keepMoney="+keepMoney+",zj="+zj+",zy='"+zy+"',ISBN='"+ISBN+"',bztime='"+bztime+"' where ISBN='"+ISBN+"'";
+				i = JDBC.executeUpdate(sql);
+			}catch(Exception e){
+				System.out.println(e.getMessage());
+			}
+			JDBC.close();
+			return i;
+		}
+
+		public static List selectreader(){
+			List list = new ArrayList();
+			String sql = "select * from reader";
+			ResultSet rs = JDBC.executeQuery(sql);
+			try{
+				while(rs.next()){//双引号中对应数据库中的名称
+					Reader reader = new Reader();
+					reader.setAge(rs.getString("age"));
+					reader.setBztime(rs.getDate("bztime"));
+					reader.setName(rs.getString("name"));
+					reader.setSex(rs.getString("sex"));
+					reader.setIdentityCard(rs.getString("identityCard"));
+					reader.setDate(rs.getDate("date"));
+					reader.setMaxNum(rs.getString("maxNum"));
+					reader.setTel(rs.getString("tel"));
+					reader.setKeepMoney(rs.getDouble("KeepMoney"));
+					reader.setZj(rs.getInt("zj"));
+					reader.setZy(rs.getString("zy"));
+					reader.setISBN(rs.getString("ISBN"));
+					list.add(reader);
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			JDBC.close();
+			return list;
+		}
+
+		public static List selectreaderisbn(String ISBN){
+			List list = new ArrayList();
+			String sql = "select * from reader where ISBN='"+ISBN+"'";
+			ResultSet rs=JDBC.executeQuery(sql);
+		    try{
+		    	while(rs.next()){
+		    		Reader reader = new Reader();
+					reader.setAge(rs.getString("age"));
+					reader.setBztime(rs.getDate("bztime"));
+					reader.setName(rs.getString("name"));
+					reader.setSex(rs.getString("sex"));
+					reader.setIdentityCard(rs.getString("identityCard"));
+					reader.setDate(rs.getDate("date"));
+					reader.setMaxNum(rs.getString("maxNum"));
+					reader.setTel(rs.getString("tel"));
+					reader.setKeepMoney(rs.getDouble("KeepMoney"));
+					reader.setZj(rs.getInt("zj"));
+					reader.setZy(rs.getString("zy"));
+					reader.setISBN(rs.getString("ISBN"));
+					list.add(reader);
+		    	}
+		    }catch(Exception e){
+		    	e.printStackTrace();
+		    }
+		    JDBC.close();
+		    return list;
+		}
+
+}
